@@ -68,3 +68,9 @@ header {
   font-size: 0.8rem;
   margin-right: 0.5rem;
 }
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
