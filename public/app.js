@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const scheduleContainer = document.getElementById('schedule-container');
-  const searchInput = document.getElementById('searchInput');
+  const categorySearchInput = document.getElementById('categorySearchInput');
+  const speakerSearchInput = document.getElementById('speakerSearchInput');
   let talks = [];
 
   fetch('/api/talks')
@@ -10,13 +11,21 @@ document.addEventListener('DOMContentLoaded', () => {
       renderSchedule(talks);
     });
 
-  searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredTalks = talks.filter(talk => 
-      talk.categories.some(category => category.toLowerCase().includes(searchTerm))
-    );
+  function filterTalks() {
+    const categoryTerm = categorySearchInput.value.toLowerCase();
+    const speakerTerm = speakerSearchInput.value.toLowerCase();
+
+    const filteredTalks = talks.filter(talk => {
+      const categoryMatch = categoryTerm === '' || talk.categories.some(category => category.toLowerCase().includes(categoryTerm));
+      const speakerMatch = speakerTerm === '' || talk.speakers.some(speaker => speaker.toLowerCase().includes(speakerTerm));
+      return categoryMatch && speakerMatch;
+    });
+
     renderSchedule(filteredTalks);
-  });
+  }
+
+  categorySearchInput.addEventListener('input', filterTalks);
+  speakerSearchInput.addEventListener('input', filterTalks);
 
   function renderSchedule(talksToRender) {
     scheduleContainer.innerHTML = '';
