@@ -2,12 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const scheduleContainer = document.getElementById('schedule-container');
   const categorySearchInput = document.getElementById('categorySearchInput');
   const speakerSearchInput = document.getElementById('speakerSearchInput');
+  const loadingIndicator = document.getElementById('loading-indicator');
+  const loadingMessage = document.getElementById('loading-message');
   let talks = [];
 
   fetch('/api/talks')
     .then(response => response.json())
     .then(data => {
       talks = data;
+      loadingIndicator.classList.add('hidden');
+      loadingMessage.classList.add('hidden');
       renderSchedule(talks);
     });
 
